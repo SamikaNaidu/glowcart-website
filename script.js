@@ -95,10 +95,11 @@ function showToast(message) {
   }, 2000);
 }
 
-// 🔥 UPDATED: Load products with CATEGORY SUPPORT
+// 🔥 LOAD PRODUCTS (FIXED WITH DEPLOYED BACKEND)
 async function loadProducts(category = null) {
   try {
-    let url = "http://localhost:3000/products";
+    // ✅ IMPORTANT CHANGE HERE
+    let url = "https://glowcart-backend.onrender.com/products";
 
     if (category) {
       url += `?category=${encodeURIComponent(category)}`;
@@ -130,7 +131,7 @@ async function loadProducts(category = null) {
   }
 }
 
-// 🔥 MAIN CONTROLLER (THIS IS THE MAGIC)
+// 🔥 PAGE LOGIC
 document.addEventListener("DOMContentLoaded", function () {
   loadCart();
 
@@ -148,6 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
   } else if (path.includes("fragrance.html")) {
     loadProducts("Fragrance");
   } else {
-    loadProducts(); // shop page (all products)
+    loadProducts(); // shop page
   }
 });
