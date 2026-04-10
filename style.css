@@ -463,3 +463,19 @@ body {
   width: auto;
   filter: brightness(0) saturate(100%) invert(17%) sepia(94%) saturate(5632%) hue-rotate(328deg) brightness(95%) contrast(105%);
 }
+
+.makeup-banner {
+  background: linear-gradient(to right, #ff4d88, #ff66b2);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.makeup-banner h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.makeup-banner p {
+  font-size: 1.2rem;
+}

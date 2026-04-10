@@ -14,21 +14,20 @@ fetch("footer.html")
     if (footerDiv) footerDiv.innerHTML = data;
   });
 
-// Get cart from localStorage
+// Get cart
 function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
-// Save cart to localStorage
+// Save cart
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Add to cart function (with quantity support)
+// Add to cart
 function addToCart(name, price) {
   let cart = getCart();
 
-  // Check if item already exists
   const existingItem = cart.find(item => item.name === name);
 
   if (existingItem) {
@@ -41,13 +40,13 @@ function addToCart(name, price) {
   showToast(name + " added to cart");
 }
 
-// Display cart items (for cart.html)
+// Load cart
 function loadCart() {
   let cart = getCart();
   let cartItemsDiv = document.getElementById("cart-items");
   let totalDiv = document.getElementById("cart-total");
 
-  if (!cartItemsDiv || !totalDiv) return; // Not on cart page
+  if (!cartItemsDiv || !totalDiv) return;
 
   cartItemsDiv.innerHTML = "";
   let total = 0;
@@ -61,13 +60,14 @@ function loadCart() {
   cart.forEach((item, index) => {
     let div = document.createElement("div");
     div.className = "cart-item";
+
     div.innerHTML = `
       <span><strong>${item.name}</strong> (x${item.quantity})</span>
       <span>₹${item.price * item.quantity}</span>
       <button onclick="removeFromCart(${index})">Remove</button>
     `;
-    cartItemsDiv.appendChild(div);
 
+    cartItemsDiv.appendChild(div);
     total += item.price * item.quantity;
   });
 
@@ -82,12 +82,7 @@ function removeFromCart(index) {
   loadCart();
 }
 
-// Load cart when page opens
-document.addEventListener("DOMContentLoaded", function () {
-  loadCart();
-});
-
-// Toast notification
+// Toast
 function showToast(message) {
   const toast = document.getElementById("toast");
   if (!toast) return;
@@ -99,3 +94,60 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 2000);
 }
+
+// 🔥 UPDATED: Load products with CATEGORY SUPPORT
+async function loadProducts(category = null) {
+  try {
+    let url = "http://localhost:3000/products";
+
+    if (category) {
+      url += `?category=${encodeURIComponent(category)}`;
+    }
+
+    const response = await fetch(url);
+    const products = await response.json();
+
+    const container = document.getElementById("product-list");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    products.forEach(product => {
+      container.innerHTML += `
+        <div class="product-card">
+          <img src="${product.image}" class="product-image" />
+          <h3>${product.name}</h3>
+          <p>₹${product.price}</p>
+          <button onclick="addToCart('${product.name}', ${product.price})">
+            Add to Cart
+          </button>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error("Error loading products:", error);
+  }
+}
+
+// 🔥 MAIN CONTROLLER (THIS IS THE MAGIC)
+document.addEventListener("DOMContentLoaded", function () {
+  loadCart();
+
+  const productContainer = document.getElementById("product-list");
+  if (!productContainer) return;
+
+  const path = window.location.pathname;
+
+  if (path.includes("makeup.html")) {
+    loadProducts("Makeup");
+  } else if (path.includes("skincare.html")) {
+    loadProducts("Skincare & Beauty");
+  } else if (path.includes("hair.html")) {
+    loadProducts("Hair");
+  } else if (path.includes("fragrance.html")) {
+    loadProducts("Fragrance");
+  } else {
+    loadProducts(); // shop page (all products)
+  }
+});

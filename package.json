@@ -1,0 +1,25 @@
+{
+  "name": "fashion-website",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamikaNaidu/glowcart-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamikaNaidu/glowcart-website/issues"
+  },
+  "homepage": "https://github.com/SamikaNaidu/glowcart-website#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongodb": "^7.1.0"
+  }
+}
